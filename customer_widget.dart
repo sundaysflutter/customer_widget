@@ -7,6 +7,7 @@ import 'package:flutter_color/flutter_color.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 
 Widget myItemWidget(
     {String iconName,
@@ -206,4 +207,56 @@ Widget pinCodeWdiget(
           },
         )
       ]);
+}
+
+Future openSimpleDialog(BuildContext context,
+    [String svgImgStr = 'images/alert_suc_markwhite_bluebg.svg',
+    String titleStr = 'M_changeSucess',
+    String subTitleStr = 'M_remberPIN',
+    String btnStr = 'Done',
+    String modelUtilName = '/']) async {
+  final option = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          title: Container(
+            height: 80,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              svgImgStr,
+              width: 28,
+              height: 28,
+            ),
+          ),
+          children: <Widget>[
+            Container(
+              height: 80,
+              alignment: Alignment.center,
+              child: Text(tr(titleStr)),
+            ),
+            Container(
+              height: 80,
+              alignment: Alignment.center,
+              child: Text(
+                tr(subTitleStr),
+                style: TextStyle(
+                    fontSize: 10, color: Theme.of(context).primaryColor),
+              ),
+            ),
+            Divider(
+              height: 1,
+            ),
+            FlatButton(
+              child: Text(tr(btnStr)),
+              onPressed: () {
+                Navigator.pop(context, 'Done');
+              },
+            ),
+          ],
+        );
+      });
+  if (option == 'Done') {
+    Navigator.of(context).popUntil(ModalRoute.withName(modelUtilName));
+  }
 }
